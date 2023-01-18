@@ -14,23 +14,25 @@ def print_board(board):
 def update_board(board, board2):
     for y in range(len(board)):
         for x in range(len(board[0])):
-            board2[x][y] = next_state(x, y, board)
-   
+            board2[y][x] = next_state(x, y, board)
+
+
 def next_state(x,y, board):
     life_juice = 0 
 
     for row in range(y-1, y+2):
         for col in range(x-1, x+2):
             life_juice += get_state(col, row, board)
-    
+    life_juice -= board[y][x]
+
     if board[y][x] == 0:
         if life_juice == 3:
             return 1
         return 0
-    elif board[y][x] == 1:
-        if life_juice == 2 or life_juice == 3:
-            return 1
-        return 0
+
+    if life_juice == 2 or life_juice == 3:
+        return 1
+    return 0
 
 def get_state(x, y, board):
     if x < 0 or y < 0 or x >= len(board[0]) or y >= len(board):
@@ -38,23 +40,28 @@ def get_state(x, y, board):
     return board[y][x]
 
 def main():
+    generations = 5
+    if "--generations" in sys.argv:
+        generations = int(sys.argv[sys.argv.index("--generations") + 1])
     board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
-    print_board(board)
     board2 = [[0]*10 for i in range(10)]
 
-    update_board(board, board2)
-    board, board2 = board2, board
     print_board(board)
+    for _ in range(generations):
+        update_board(board, board2)
+        print_board(board2)
+        board, board2 = board2, board
+
 main()
 
