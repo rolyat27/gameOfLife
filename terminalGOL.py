@@ -1,5 +1,6 @@
 import random
 import sys
+import argparse
 #rules of game of life:
 #1 if cell is alive, it stays alive if it has 2 or 3 live neighbors
 #2 cells come to life only when surrounded by 3 live neighbors
@@ -42,13 +43,15 @@ def get_state(x, y, board):
 def main():
     generations = 5
     if "--generations" in sys.argv:
-        generations = int(sys.argv[sys.argv.index("--generations") + 1])
+        generations_index = sys.argv.index("--generations") + 1
+        if generations_index < len(sys.argv):
+            generations = int(sys.argv[generations_index])
     board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -64,4 +67,3 @@ def main():
         board, board2 = board2, board
 
 main()
-
