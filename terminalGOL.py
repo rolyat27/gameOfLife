@@ -41,11 +41,16 @@ def get_state(x, y, board):
     return board[y][x]
 
 def main():
-    generations = 5
-    if "--generations" in sys.argv:
-        generations_index = sys.argv.index("--generations") + 1
-        if generations_index < len(sys.argv):
-            generations = int(sys.argv[generations_index])
+    parser = argparse.ArgumentParser(description="Conway's Game of Life")
+    parser.add_argument(
+        "--generations",
+        type=int,
+        default=5,
+        help="Number of generations to simulate (default: 5)"
+    )
+    args = parser.parse_args()
+    generations = args.generations
+
     board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,7 +63,7 @@ def main():
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
-    board2 = [[0]*10 for i in range(10)]
+    board2 = [[0] * 10 for _ in range(10)]
 
     print_board(board)
     for _ in range(generations):
